@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>운학의 iPhone</title>
+<style>
+:root{--page:#e6e4ec;--ink:#1c1b22;--mute:#8a8794;--accent:#3a7bff;--you:#ecebf1}
+@media (prefers-color-scheme:dark){:root{--page:#141318}}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--page);display:flex;align-items:center;justify-content:center;font-family:-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink)}
+#frame{width:392px;height:820px;max-height:100vh;background:#000;border-radius:58px;padding:12px;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#phone{position:relative;width:100%;height:100%;border-radius:46px;overflow:hidden;background:#fff}
+@media (max-width:500px){#frame{width:100%;height:100dvh;max-height:none;border-radius:0;padding:0;box-shadow:none}#phone{border-radius:0}}
+.screen{position:absolute;inset:0;display:none;flex-direction:column}
+.screen.on{display:flex}
+.status{position:absolute;top:0;left:0;right:0;height:52px;padding:18px 34px 0;display:flex;justify-content:space-between;font-size:16px;font-weight:600;z-index:5;pointer-events:none}
+.status.dark{color:#111}
+.status span{display:flex;gap:6px;align-items:center}
+.sig{display:inline-flex;gap:2px;align-items:flex-end;height:12px}
+.sig i{width:3px;background:currentColor;border-radius:1px}
+.bat{border:1.5px solid currentColor;border-radius:6px;padding:0 5px;font-size:11px;line-height:14px}
+.island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:104px;height:30px;border-radius:20px;background:#000;z-index:6}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:130px;height:5px;border-radius:3px;background:#fff;opacity:.9;z-index:5}
+.homebar.dark{background:#111}
+/* lock */
+#lock{background:radial-gradient(120% 70% at 70% 80%,#6a6d73 0%,#2c2d31 45%,#050506 100%);color:#fff;align-items:center}
+#lock h2{margin-top:112px;font-size:22px;font-weight:500}
+#dots{display:flex;gap:26px;margin:36px 0 52px}
+#dots i{width:14px;height:14px;border-radius:50%;border:1.5px solid #fff}
+#dots i.f{background:#fff}
+#pad{display:grid;grid-template-columns:repeat(3,76px);gap:16px 20px}
+#pad button{width:76px;height:76px;border-radius:50%;border:0;background:rgba(255,255,255,.22);color:#fff;font-size:34px;line-height:1;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#pad button small{font-size:10px;letter-spacing:2px;margin-top:2px;height:11px}
+#pad button:active{background:rgba(255,255,255,.55)}
+#pad .z{grid-column:2}
+.lowrow{position:absolute;bottom:40px;left:34px;right:34px;display:flex;justify-content:space-between;font-size:17px}
+.lowrow button{background:none;border:0;color:#fff;font-size:17px;cursor:pointer}
+.shake{animation:sh .4s}
+@keyframes sh{20%{transform:translateX(-12px)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}80%{transform:translateX(8px)}}
+@media (prefers-reduced-motion:reduce){.shake{animation:none}}
+/* home */
+#home{background:linear-gradient(165deg,#2a3550 0%,#4a4f7a 50%,#8b7fa8 100%);color:#fff;padding:0 22px}
+#icons{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 8px;margin-top:96px}
+.app{background:none;border:0;color:#fff;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.app span{width:60px;height:60px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+/* apps */
+.head{display:flex;align-items:center;gap:8px;padding:56px 14px 10px;border-bottom:1px solid #eee;background:#fff}
+.head b{flex:1;text-align:center;font-size:17px}
+.back{border:0;background:none;color:var(--accent);font-size:16px;cursor:pointer;min-width:56px;text-align:left}
+.body{flex:1;overflow-y:auto;padding:12px 14px 34px;background:#fff}
+.row{display:flex;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px solid #f0eff3;cursor:pointer}
+.av{width:44px;height:44px;border-radius:50%;background:#dfe6ff;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+.row p{font-size:14px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px}
+.row strong{font-size:16px}
+.msg{max-width:78%;padding:9px 13px;border-radius:18px;margin:4px 0;font-size:15px;line-height:1.4;background:var(--you)}
+.msg.me{background:var(--accent);color:#fff;margin-left:auto}
+.ts{text-align:center;font-size:12px;color:var(--mute);margin:14px 0 6px}
+.note{padding:14px 4px;border-bottom:1px solid #f0eff3}
+.note h3{font-size:16px;margin-bottom:4px}
+.note p{font-size:14px;line-height:1.5;color:#55525e;white-space:pre-line}
+#grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+#grid button{aspect-ratio:1;border:0;font-size:34px;cursor:pointer}
+#cap{margin:14px 4px;font-size:15px;line-height:1.5;min-height:48px;color:#55525e}
+:focus-visible{outline:3px solid #7aa7ff;outline-offset:2px}
+</style>
+</head>
+<body>
+<div id="frame"><div id="phone">
+<div class="island"></div>
+<div class="status" id="status"><span id="time">5:59</span><span><i class="sig"><i style="height:4px"></i><i style="height:7px"></i><i style="height:10px"></i><i style="height:12px"></i></i><b class="bat">87</b></span></div>
+
+<section id="lock" class="screen on">
+  <h2>암호 입력</h2>
+  <div id="dots"><i></i><i></i><i></i><i></i></div>
+  <div id="pad"></div>
+  <div class="lowrow"><button>긴급</button><button id="del">취소</button></div>
+  <div class="homebar"></div>
+</section>
+
+<section id="home" class="screen">
+  <div id="icons">
+    <button class="app" data-go="messages"><span style="background:#34c759">💬</span>메시지</button>
+    <button class="app" data-go="photos"><span style="background:#fff">🌸</span>사진</button>
+    <button class="app" data-go="notes"><span style="background:#ffd54a">📝</span>메모</button>
+  </div>
+  <div class="homebar"></div>
+</section>
+
+<section id="messages" class="screen">
+  <div class="head"><button class="back" data-go="home">‹ 홈</button><b>메시지</b><span style="min-width:56px"></span></div>
+  <div class="body" id="threads"></div>
+</section>
+
+<section id="thread" class="screen">
+  <div class="head"><button class="back" data-go="messages">‹ 목록</button><b id="tname"></b><span style="min-width:56px"></span></div>
+  <div class="body" id="tbody"></div>
+</section>
+
+<section id="photos" class="screen">
+  <div class="head"><button class="back" data-go="home">‹ 홈</button><b>사진</b><span style="min-width:56px"></span></div>
+  <div class="body"><div id="grid"></div><p id="cap">사진을 눌러보세요.</p></div>
+</section>
+
+<section id="notes" class="screen">
+  <div class="head"><button class="back" data-go="home">‹ 홈</button><b>메모</b><span style="min-width:56px"></span></div>
+  <div class="body" id="nbody"></div>
+</section>
+</div></div>
+
+<script>
+/* ===== 여기만 고치면 내용이 바뀌어요 ===== */
+var PASS = "0904";
+var THREADS = [
+  {name:"성호", icon:"🌙", chat:[
+    ["t","어제 밤 11:42"],
+    ["you","자?"],["me","아직. 왜"],["you","그냥. 목소리 듣고 싶어서"],
+    ["me","전화할까?"],["you","아니 문자로 해줘. 오늘은 그게 더 좋아"],
+    ["t","오늘 오전 8:10"],
+    ["you","오늘 점심 같이 먹을 사람?"],["me","나요"],["you","메뉴는 운학이 고르기. 약속"],
+    ["me","…그 말 책임질 수 있어?"],["you","응. 근데 돈가스는 빼고"]
+  ]},
+  {name:"지우", icon:"🍓", chat:[
+    ["you","야 어제 성호랑 뭐 했어"],["me","아무것도 안 했거든"],
+    ["you","얼굴에 다 써있는데?"],["me","조용히 해 제발"]
+  ]}
+];
+var PHOTOS = [
+  ["🍜","#ffe3d1","성호가 찍어준 첫 사진. 초점은 나가고 국물만 선명함."],
+  ["🌆","#d9e4ff","퇴근길 하늘. 같이 걷다가 성호가 갑자기 멈춰서 찍자고 했다."],
+  ["🐈","#f1e6ff","길고양이 '두부'. 성호가 간식 주는 걸 몰래 찍음."],
+  ["🎂","#ffe0ec","생일 케이크. 촛불 끄기 전에 소원 뭐 빌었는지는 비밀."],
+  ["🎧","#d8f5ee","성호가 보내준 플레이리스트 캡처. 제목: '운학 전용'."],
+  ["🌷","#fff3c9","꽃집 앞. 사줄까 물어봤는데 괜히 아니라고 했다."]
+];
+var NOTES = [
+  ["오늘 할 말","성호한테 말해야지.\n- 어제 고마웠다고\n- 다음 주 시험 끝나면 영화 보자고\n- (이건 아직 못 쓰겠음)"],
+  ["성호 취향","커피는 아이스, 달달한 건 싫다고 하면서 케이크는 먹음.\n웃을 때 왼쪽 눈이 먼저 감김."],
+  ["절대 지울 것","이 메모 보는 사람 누구야.\n보지 마."]
+];
+/* ======================================= */
+var $=function(i){return document.getElementById(i)};
+function go(id){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id===id)});
+  $("status").classList.toggle("dark",id!=="lock"&&id!=="home");
+}
+document.addEventListener("click",function(e){var t=e.target.closest("[data-go]");if(t)go(t.dataset.go)});
+
+function tick(){var d=new Date(),h=d.getHours()%12||12,m=("0"+d.getMinutes()).slice(-2);$("time").textContent=h+":"+m}
+tick();setInterval(tick,20000);
+
+var entered="";
+var LET={2:"ABC",3:"DEF",4:"GHI",5:"JKL",6:"MNO",7:"PQRS",8:"TUV",9:"WXYZ"};
+["1","2","3","4","5","6","7","8","9","0"].forEach(function(k){
+  var b=document.createElement("button");
+  b.innerHTML=k+"<small>"+(LET[k]||"")+"</small>";
+  if(k==="0")b.className="z";
+  b.setAttribute("aria-label","숫자 "+k);
+  b.onclick=function(){press(k)};
+  $("pad").appendChild(b);
+});
+function draw(){document.querySelectorAll("#dots i").forEach(function(d,i){d.classList.toggle("f",i<entered.length)})}
+function press(k){
+  if(entered.length>=PASS.length)return;
+  entered+=k;draw();
+  if(entered.length===PASS.length){
+    setTimeout(function(){
+      if(entered===PASS){entered="";draw();go("home")}
+      else{entered="";draw();var d=$("dots");d.classList.remove("shake");void d.offsetWidth;d.classList.add("shake")}
+    },250);
+  }
+}
+$("del").onclick=function(){entered=entered.slice(0,-1);draw()};
+document.addEventListener("keydown",function(e){
+  if($("lock").classList.contains("on")){
+    if(/^[0-9]$/.test(e.key))press(e.key);
+    else if(e.key==="Backspace"){entered=entered.slice(0,-1);draw()}
+  }
+});
+
+THREADS.forEach(function(t){
+  var r=document.createElement("div");r.className="row";r.tabIndex=0;
+  var last=t.chat[t.chat.length-1][1];
+  r.innerHTML='<div class="av">'+t.icon+'</div><div><strong>'+t.name+'</strong><p>'+last+'</p></div>';
+  var open=function(){
+    $("tname").textContent=t.name;var b=$("tbody");b.innerHTML="";
+    t.chat.forEach(function(m){
+      var d=document.createElement("div");
+      d.className=m[0]==="t"?"ts":"msg"+(m[0]==="me"?" me":"");d.textContent=m[1];b.appendChild(d);
+    });
+    go("thread");b.scrollTop=b.scrollHeight;
+  };
+  r.onclick=open;r.onkeydown=function(e){if(e.key==="Enter")open()};
+  $("threads").appendChild(r);
+});
+
+PHOTOS.forEach(function(p){
+  var b=document.createElement("button");b.textContent=p[0];b.style.background=p[1];b.setAttribute("aria-label","사진 "+p[0]);
+  b.onclick=function(){$("cap").textContent=p[2]};
+  $("grid").appendChild(b);
+});
+
+NOTES.forEach(function(n){
+  var d=document.createElement("div");d.className="note";
+  var h=document.createElement("h3");h.textContent=n[0];
+  var p=document.createElement("p");p.textContent=n[1];
+  d.appendChild(h);d.appendChild(p);$("nbody").appendChild(d);
+});
+</script>
+</body>
+</html>
